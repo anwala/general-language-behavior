@@ -1,0 +1,174 @@
+import os
+
+########################################################
+# Sources
+########################################################
+BOTOMETER_DATASETS = [
+    'verified',           # 2k
+    'kevin_feedback',     # 0.5k, done
+    'pronbots',           # 17k
+    'stock',              # 14k
+    'rtbust',             # 1k
+    'midterm-2018',       # 8k
+    'zoher-organization', # 6k, done
+    'botwiki',            # 0.5k
+    'gilani-17',          # 2.5k
+    'varol-icwsm',        # 2k
+    'gregory_purchased',  # 1k
+    'astroturf',          # 0.5k
+    'cresci-17',          # 10k
+    'josh_political',     # done
+]
+#BOTOMETER_DATASETS = ['rtbust']
+BOTOMETER_DATASETS = ['kevin_feedback']
+
+RAW_TRAINING_DATA_ROOT = '/scratch/anwala/IU/BLOC/botometer_retraining_data'
+RAW_TRAINING_DATA_TWEETS = os.path.join(RAW_TRAINING_DATA_ROOT, '{dataset}', 'tweets.jsons.gz')
+RAW_TRAINING_DATA_FEATURES = os.path.join(RAW_TRAINING_DATA_ROOT, '{dataset}', 'features_V4.csv')
+
+########################################################
+# Targets
+########################################################
+TARGET_ROOT = "/u/anwala/to_delete/bot-detect-res/"
+
+#BLOC_MODELS = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']
+BLOC_MODELS = ['m1']
+
+########################################################
+# Rules
+########################################################
+
+
+########################################################
+# Calculate tfidf
+BLOC_TFIDF = os.path.join(TARGET_ROOT, 'tfidf','tfidf_{model}.json.gz')
+rule calculate_tfidf_all:
+    input: expand(BLOC_TFIDF, model = BLOC_MODELS)
+
+rule calculate_tfidf:
+    input: expand(RAW_TRAINING_DATA_TWEETS, dataset = BOTOMETER_DATASETS)
+    params: "{model}"
+    output: BLOC_TFIDF
+    shell: "python calculate_tfidf_generator.py {input} {params} {output}"
+
+TFIDF_TABLE = os.path.join(TARGET_ROOT, 'tfidf', 'tfidf_{model}.csv.gz')
+rule tabulate_tfidf_all:
+    input: expand(TFIDF_TABLE, model = BLOC_MODELS)
+
+rule tabulate_tfidf:
+    input: BLOC_TFIDF
+    output: TFIDF_TABLE
+    shell: "python tabulate_tfidf.py {input} {output}"
+
+########################################################
+# Prepare labels and features
+BOTOMETER_FEATURES = os.path.join(TARGET_ROOT, 'botometer_features.csv.gz')
+rule combine_features:
+    input: expand(RAW_TRAINING_DATA_FEATURES, dataset=BOTOMETER_DATASETS)
+    output: BOTOMETER_FEATURES
+    shell: "python combine_features.py {input} {output}"
+
+BOTO_FEATURE_AND_TFIDF_TABLE = os.path.join(TARGET_ROOT, 'boto_features_and_tfidf', 'boto_features_and_tfidf_{model}.csv.gz')
+rule merge_botometer_feature_with_tfidf_all:
+    input: expand(BOTO_FEATURE_AND_TFIDF_TABLE, model = BLOC_MODELS)
+
+rule merge_botometer_feature_with_tfidf:
+    input: BOTOMETER_FEATURES, TFIDF_TABLE
+    output: BOTO_FEATURE_AND_TFIDF_TABLE
+    shell: "python merge_botometer_feature_with_tfidf.py {input} {output}"
+
+
+########################################################
+# Evaluate the ML performance
+ML_RESULTS = os.path.join(TARGET_ROOT, 'ml_results', 'ml_result_{model}.csv')
+ML_RESULTS_ALL = os.path.join(TARGET_ROOT, 'ml_results_all.csv')
+rule run_ml_all:
+    input: expand(ML_RESULTS, model = BLOC_MODELS)
+    output: ML_RESULTS_ALL
+    shell: "python merge_dfs.py {input} {output}"
+
+rule run_ml:
+    input: BOTO_FEATURE_AND_TFIDF_TABLE
+    params: "{model}"
+    output: ML_RESULTS
+    shell: "python run_ml.py {input} {params} {output}"
+
+
+########################################################
+# Sample the datasets
+########################################################
+SAMPLE_ROOT = os.path.join(TARGET_ROOT, 'sample')
+SAMPLE_TRAINING_DATA_TWEETS = os.path.join(SAMPLE_ROOT, 'tweets', '{dataset}_tweets.jsons.gz')
+SAMPLE_TRAINING_DATA_FEATURES = os.path.join(SAMPLE_ROOT, 'features', '{dataset}_features.csv')
+
+rule sample_dataset_tweets_all:
+    input: expand(SAMPLE_TRAINING_DATA_TWEETS, dataset=BOTOMETER_DATASETS)
+
+rule sample_dataset_tweets:
+    input: SAMPLE_TRAINING_DATA_FEATURES, RAW_TRAINING_DATA_TWEETS
+    output: SAMPLE_TRAINING_DATA_TWEETS
+    shell: "python sample_datasets_tweets.py {input} {params} {output}"
+
+rule sample_dataset_features_all:
+    input: expand(SAMPLE_TRAINING_DATA_FEATURES, dataset = BOTOMETER_DATASETS)
+
+rule sample_dataset_features:
+    input: RAW_TRAINING_DATA_FEATURES
+    params: "{dataset}"
+    output: SAMPLE_TRAINING_DATA_FEATURES
+    shell: "python sample_datasets_features.py {input} {params} {output}"
+
+
+########################################################
+# Calculate tfidf
+SAMPLE_BLOC_TFIDF = os.path.join(SAMPLE_ROOT, 'tfidf','tfidf_{model}.json.gz')
+rule calculate_tfidf_sample_all:
+    input: expand(SAMPLE_BLOC_TFIDF, model = BLOC_MODELS)
+
+rule calculate_tfidf_sample:
+    input: expand(SAMPLE_TRAINING_DATA_TWEETS, dataset = BOTOMETER_DATASETS)
+    params: "{model}"
+    output: SAMPLE_BLOC_TFIDF
+    shell: "python calculate_tfidf_generator.py {input} {params} {output}"
+
+SAMPLE_TFIDF_TABLE = os.path.join(SAMPLE_ROOT, 'tfidf', 'tfidf_{model}.csv.gz')
+rule tabulate_tfidf_sample_all:
+    input: expand(SAMPLE_TFIDF_TABLE, model = BLOC_MODELS)
+
+rule tabulate_tfidf_sample:
+    input: SAMPLE_BLOC_TFIDF
+    output: SAMPLE_TFIDF_TABLE
+    shell: "python tabulate_tfidf.py {input} {output}"
+
+########################################################
+# Prepare labels and features
+SAMPLE_BOTOMETER_FEATURES = os.path.join(SAMPLE_ROOT, 'botometer_features.csv.gz')
+rule combine_features_sample:
+    input: expand(SAMPLE_TRAINING_DATA_FEATURES, dataset=BOTOMETER_DATASETS)
+    output: SAMPLE_BOTOMETER_FEATURES
+    shell: "python combine_features.py {input} {output}"
+
+SAMPLE_BOTO_FEATURE_AND_TFIDF_TABLE = os.path.join(SAMPLE_ROOT, 'boto_features_and_tfidf', 'boto_features_and_tfidf_{model}.csv.gz')
+rule merge_botometer_feature_with_tfidf_sample_all:
+    input: expand(SAMPLE_BOTO_FEATURE_AND_TFIDF_TABLE, model = BLOC_MODELS)
+
+rule merge_botometer_feature_with_tfidf_sample:
+    input: SAMPLE_BOTOMETER_FEATURES, SAMPLE_TFIDF_TABLE
+    output: SAMPLE_BOTO_FEATURE_AND_TFIDF_TABLE
+    shell: "python merge_botometer_feature_with_tfidf.py {input} {output}"
+
+
+########################################################
+# Evaluate the ML performance
+SAMPLE_ML_RESULTS = os.path.join(SAMPLE_ROOT, 'ml_results', 'ml_result_{model}.csv')
+SAMPLE_ML_RESULTS_ALL = os.path.join(SAMPLE_ROOT, 'ml_results_all.csv')
+rule run_ml_sample_all:
+    input: expand(SAMPLE_ML_RESULTS, model = BLOC_MODELS)
+    output: SAMPLE_ML_RESULTS_ALL
+    shell: "python merge_dfs.py {input} {output}"
+
+rule run_ml_sample:
+    input: SAMPLE_BOTO_FEATURE_AND_TFIDF_TABLE
+    params: "{model}"
+    output: SAMPLE_ML_RESULTS
+    shell: "python run_ml.py {input} {params} {output}"

@@ -1,0 +1,13 @@
+This Folder contains base classes for each problem.
+In subfolder "lv" are implementations for these problems. So the class hierarchy is:
+
+LCX: parent class for all longest common X problems
+- LCS: longest common substring
+    - LCS_last_visited
+    - LCS_last_visited_int
+- LCR: longest common repeat
+    - LCR_last_visited
+    - LCR_last_visited_int
+  - GLCR: generalized longest common repeat
+      - GLCR_last_visited_int
+  
