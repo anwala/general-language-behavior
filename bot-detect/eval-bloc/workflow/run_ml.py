@@ -126,8 +126,8 @@ train_test_split_indices = get_train_test_split(X_bloc)
 
 different_combo_performance = []
 
-for boto_feature_type in ["content", "sentiment", "friend", "network", "user", "temporal", "all"]:
-#for boto_feature_type in ["all"]:
+#for boto_feature_type in ["content", "sentiment", "friend", "network", "user", "temporal", "all"]:
+for boto_feature_type in ["all"]:
     for combo in [True, False]:
 
         if boto_feature_type == "all":

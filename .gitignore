@@ -8,6 +8,7 @@ __pycache__/
 
 .snakemake
 .DS_Store
+._.DS_Store
 *.pdf
 
 # Distribution / packaging

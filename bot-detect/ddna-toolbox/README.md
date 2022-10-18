@@ -1,4 +1,6 @@
-# [Digital DNA Toolbox](https://ocean.sagepub.com/blog/2018/6/22/digital-dna-how-to-map-our-online-behavior?rq=DDNA)
+# [Modified Digital DNA Toolbox](https://ocean.sagepub.com/blog/2018/6/22/digital-dna-how-to-map-our-online-behavior?rq=DDNA)
+
+Modified version of [Cresci et. al.'s](https://doi.org/10.1109/TDSC.2017.2681672) Digital DNA Toolbox code. We modified the [original code](https://github.com/WAFI-CNR/ddna-toolbox) to enable evaluating Digital DNA with BLOC in the bot detection task. The modifications made are explained in the paper.
 
 <!--
 [![Travis Status](https://travis-ci.org/scikit-learn-contrib/project-template.svg?branch=master)](https://travis-ci.org/scikit-learn-contrib/project-template)

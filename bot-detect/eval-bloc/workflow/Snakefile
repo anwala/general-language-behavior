@@ -19,17 +19,16 @@ BOTOMETER_DATASETS = [
     'cresci-17',          # 10k
     'josh_political',     # done
 ]
-#BOTOMETER_DATASETS = ['rtbust']
-BOTOMETER_DATASETS = ['kevin_feedback']
+#BOTOMETER_DATASETS = ['kevin_feedback']
 
-RAW_TRAINING_DATA_ROOT = '/scratch/anwala/IU/BLOC/botometer_retraining_data'
+RAW_TRAINING_DATA_ROOT = '/path/to/evaluation/tweets/dataset'
 RAW_TRAINING_DATA_TWEETS = os.path.join(RAW_TRAINING_DATA_ROOT, '{dataset}', 'tweets.jsons.gz')
 RAW_TRAINING_DATA_FEATURES = os.path.join(RAW_TRAINING_DATA_ROOT, '{dataset}', 'features_V4.csv')
 
 ########################################################
 # Targets
 ########################################################
-TARGET_ROOT = "/u/anwala/to_delete/bot-detect-res/"
+TARGET_ROOT = "/path/to/output/"
 
 #BLOC_MODELS = ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']
 BLOC_MODELS = ['m1']
