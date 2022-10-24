@@ -4,10 +4,10 @@ This repository contains code and data required to replicate the results from th
 
 ## BOT DETECTION
 
-We compared the performance of BLOC with three baselines, [Botometer](https://botometer.osome.iu.edu/), [Twitter DNA](https://doi.org/10.1109/TDSC.2017.2681672), and [DNA-influenced](https://www.nature.com/articles/s41598-022-11854-w) on the bot detection task. Here we provide the references to all the methods excluding Botometer since its code is not publicly available.
+We compared the performance of BLOC to three baselines, [Botometer](https://botometer.osome.iu.edu/), [Twitter DNA](https://doi.org/10.1109/TDSC.2017.2681672), and [DNA-influenced](https://www.nature.com/articles/s41598-022-11854-w) on the bot detection task. Here we provide the references to all the methods excluding Botometer since its code is not publicly available.
 
 #### Dataset
-All tweets and accounts used in the bot detection task can be found in the [Bot repository dataset]([Dataset](https://botometer.osome.iu.edu/bot-repository/datasets.html)).
+All tweets and accounts used in the bot detection task can be found in the [Bot repository dataset](https://botometer.osome.iu.edu/bot-repository/datasets.html).
 
 #### Models
   * BLOC
@@ -17,11 +17,11 @@ All tweets and accounts used in the bot detection task can be found in the [Bot 
 ####  Evaluate BLOC
   0. [Install BLOC](https://github.com/anwala/bloc)
   1. Set `RAW_TRAINING_DATA_ROOT` in [`general-language-behavior/bot-detect/bloc-eval/workflow/Snakefile`](https://github.com/anwala/general-language-behavior/blob/main/bot-detect/eval-bloc/workflow/Snakefile#L25) with the path to the evaluation dataset consisting of the `tweets.jsons.gz`
-  2. Set `TARGET_ROOT` in [`general-language-behavior/bot-detect/bloc-eval/workflow/Snakefile`](https://github.com/anwala/general-language-behavior/blob/main/bot-detect/eval-bloc/workflow/Snakefile#L32) with output path (e.g., `/tmp/bot-detect-res/`) for the evaluation results. Then run the following commands.
+  2. Set `TARGET_ROOT` in [`general-language-behavior/bot-detect/bloc-eval/workflow/Snakefile`](https://github.com/anwala/general-language-behavior/blob/main/bot-detect/eval-bloc/workflow/Snakefile#L32) with the output path (e.g., `/tmp/bot-detect-res/`) for the evaluation results. Then run the following commands.
   3. `$ conda activate snakemake`
   4. `$ cd general-language-behavior/bot-detect/bloc-eval/workflow`
   5. `$ snakemake --cores=5 run_ml_all`
-  6. The f1, recall, precision, and number of features are written to the `ml_results_all.cvs` file in the output path (e.g., `/tmp/bot-detect-res/ml_results_all.csv`)
+  6. The f1, recall, precision, and number of features are written to the `ml_results_all.cvs` file in the output path (e.g., `/tmp/bot-detect-res/ml_results_all.csv`). 
   To reset experiment, delete all content from output path (e.g., `$rm -rf /tmp/bot-detect-res/*`), then run `$ snakemake --cores=5 run_ml_all`
 
 #### Evaluate Twitter DNA and DNA-Influenced
@@ -31,7 +31,7 @@ All tweets and accounts used in the bot detection task can be found in the [Bot 
   $ pip general-language-behavior/bot-detect/eval-dna/ddna-toolbox/glcr/
   $ pip general-language-behavior/bot-detect/eval-dna/ddna-toolbox/
   ```
-  1. [Install BLOC](https://github.iu.edu/anwala/bloc)
+  1. [Install BLOC](https://github.com/anwala/bloc)
   2. Run the following command, and ensure to set `--tweets-path` with the path to the tweets dataset.
   ```bash
     $ python general-language-behavior/bot-detect/eval-dna/bloc_paper.py --max-users=200 --evaluate-models sf sf-influenced --tweets-path=/path/to/bot_repo_tweets --task evaluate verified kevin_feedback pronbots stock rtbust midterm-2018 zoher-organization botwiki gilani-17 varol-icwsm gregory_purchased astroturf cresci-17 josh_political
