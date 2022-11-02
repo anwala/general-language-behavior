@@ -1,6 +1,6 @@
 # A General Language for Modeling Social Media Account Behavior
 
-This repository contains code and data required to replicate the results from the paper, [A General Language for Modeling Social Media Account Behavior](#).
+This repository contains code and data required to replicate the results from the paper, [A General Language for Modeling Social Media Account Behavior](http://arxiv.org/abs/2211.00639).
 
 ## BOT DETECTION
 
