@@ -4,7 +4,7 @@ This repository contains code and data required to replicate the results from th
 
 ## BOT DETECTION
 
-We compared the performance of BLOC to three baselines, [Botometer](https://botometer.osome.iu.edu/), [Twitter DNA](https://doi.org/10.1109/TDSC.2017.2681672), and [DNA-influenced](https://www.nature.com/articles/s41598-022-11854-w) on the bot detection task. Here we provide the references to all the methods excluding Botometer since its code is not publicly available.
+We compared the performance of [BLOC](https://github.com/anwala/bloc) to three baselines, [Botometer](https://botometer.osome.iu.edu/), [Twitter DNA](https://doi.org/10.1109/TDSC.2017.2681672), and [DNA-influenced](https://www.nature.com/articles/s41598-022-11854-w) on the bot detection task. Here we provide the references to all the methods excluding Botometer since its code is not publicly available.
 
 #### Dataset
 All tweets and accounts used in the bot detection task can be found in the [Bot repository dataset](https://botometer.osome.iu.edu/bot-repository/datasets.html).
