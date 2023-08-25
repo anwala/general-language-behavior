@@ -1,6 +1,18 @@
-# A General Language for Modeling Social Media Account Behavior
+# Behavioral Languages for Online Characterization (BLOC) 
 
-This repository contains code and data required to replicate the results from the paper, [A General Language for Modeling Social Media Account Behavior](http://arxiv.org/abs/2211.00639).
+This repository contains code and data required to replicate the results from the paper, [Behavioral Languages for Online Characterization (BLOC)](https://doi.org/10.1140/epjds/s13688-023-00410-9). To cite, kindly use:
+
+```
+@article{nwala_flammini_menczer_bloc,
+  title={A Language Framework for Modeling Social Media Account Behiavior},
+  author={Nwala, Alexander C. and Flammini, Alessandro and Menczer, Filippo},
+  journal = {EPJ Data Science},
+  volume = {12},
+  number = {1},
+  pages={33},
+  year = {2023}
+}
+```
 
 ## BOT DETECTION
 
