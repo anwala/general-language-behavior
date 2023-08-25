@@ -8,9 +8,10 @@ This repository contains code and data required to replicate the results from th
   author={Nwala, Alexander C. and Flammini, Alessandro and Menczer, Filippo},
   journal = {EPJ Data Science},
   volume = {12},
-  number = {1},
   pages={33},
-  year = {2023}
+  year = {2023},
+  doi = {10.1140/epjds/s13688-023-00410-9},
+  url = {https://doi.org/10.1140/epjds/s13688-023-00410-9}
 }
 ```
 
